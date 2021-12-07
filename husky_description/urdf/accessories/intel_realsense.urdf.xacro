@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="intel_realsense_mount" params="prefix topic parent_link robot_namespace">
+  <xacro:macro name="intel_realsense_mount" params="prefix topic parent_link use_namespace robot_namespace">
 
     <xacro:macro name="intel_realsense" params="
                frame:=realsense          topic:=realsense
@@ -8,6 +8,7 @@
                min_range:=0.105          max_range:=8.0
                width:=640                height:=480
                update_rate:=30
+               use_namespace:=$(arg use_namespace)
                robot_namespace:=$(arg robot_namespace)">
 
       <!-- this link is the origin for the camera's data -->
@@ -56,7 +57,13 @@
             <depthImageTopicName>depth/image_rect_raw</depthImageTopicName>
             <depthImageInfoTopicName>depth/camera_info</depthImageInfoTopicName>
             <pointCloudTopicName>depth/color/points</pointCloudTopicName>
-            <frameName>${robot_namespace}/${frame}_gazebo</frameName>
+            <xacro:if value="${use_namespace}">
+              <frameName>${robot_namespace}/${frame}_gazebo</frameName>
+            </xacro:if>
+            <xacro:unless value="${use_namespace}">
+              <frameName>${frame}_gazebo</frameName>
+            </xacro:unless>
+
             <pointCloudCutoff>${min_range}</pointCloudCutoff>
             <pointCloudCutoffMax>${max_range}</pointCloudCutoffMax>
             <distortionK1>0.00000001</distortionK1>
