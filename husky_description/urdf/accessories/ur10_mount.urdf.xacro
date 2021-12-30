@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="ur10_mount" params="prefix parent_link use_namespace robot_namespace">
+    <xacro:include filename="$(find craftsman_robots)/urdf/ur10/ur10_robot_attachment.urdf.xacro" />
+
+    <xacro:ur10_robot_attachment prefix="ur10_" joint_limited="false" transmission_hw_interface="hardware_interface/PositionJointInterface"/>
+
+    <joint name="ur10_joint" type="fixed">
+      <parent link="${parent_link}" />
+      <child link = "${prefix}base_link" />
+    </joint>
+  </xacro:macro>
+</robot>
