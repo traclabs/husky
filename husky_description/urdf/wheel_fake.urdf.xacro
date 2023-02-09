@@ -23,32 +23,29 @@ OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTE
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="husky_wheel">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="husky_wheel_fake">
 
-	<xacro:macro name="husky_wheel" params="wheel_prefix *joint_pose">
+	<xacro:macro name="husky_wheel_fake" params="wheel_prefix *joint_pose">
 		<link name="${wheel_prefix}_wheel_link">
 			<inertial>
 				<mass value="2.637" />
 				<origin xyz="0 0 0" />
 				<inertia  ixx="0.02467" ixy="0" ixz="0" iyy="0.04411" iyz="0" izz="0.02467" />
 			</inertial>
-			<visual>
-				<origin xyz="0 0 0" rpy="0 0 0" />
-				<geometry>
-					<mesh filename="package://husky_description/meshes/wheel.dae" />
-				</geometry>
-			</visual>
 			<collision>
 				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 				<geometry>
-					<cylinder length="${wheel_length}" radius="${wheel_radius}" />
+					<!-- <cylinder length="${wheel_length}" radius="${wheel_radius}" /> -->
+					<sphere radius="${wheel_radius}" />
 				</geometry>
 			</collision>
 		</link>
 
 		<gazebo reference="${wheel_prefix}_wheel_link">
-			<mu>0.0</mu>
-			<mu2>0.0</mu2>
+			<mu>100.0</mu>
+			<mu2>100.0</mu2>
+			<kp>10000000.0</kp>
+    	<kd>1.0</kd>
 		</gazebo>
 
 		<joint name="${wheel_prefix}_wheel" type="continuous">
